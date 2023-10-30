@@ -55,11 +55,11 @@ def test_login_and_open_my_pets(login_chrome_driver):
 
 def test_all_pets_counted(login_chrome_driver):
     wait = WebDriverWait(login_chrome_driver, 10)
-    # Сколько строк в таблице с животными
+    # How many rows in the table
     rows = wait.until(EC.presence_of_all_elements_located(('xpath', '//div[@id="all_my_pets"]//th[@scope="row"]')))
     # print(len(rows))
 
-    # Число из статистики
+    # Number from stat
     count = wait.until(EC.visibility_of_element_located(('class name', 'task3'))).text
     count = count.split('\n')[1]
     count = count.split(' ')[-1]
@@ -68,71 +68,70 @@ def test_all_pets_counted(login_chrome_driver):
     assert len(rows) == count
 
 def test_more_pets_with_photo(login_chrome_driver):
-    # Животные с фото
+    # Pets with photo
     with_image = login_chrome_driver.find_elements('xpath',
                                         '//div[@id="all_my_pets"]//img[contains(@src, "data")]')
-    # Животные без фото
+    # Pets without photo
     without_image = login_chrome_driver.find_elements('xpath',
                                            '//div[@id="all_my_pets"]//img[not(contains(@src, "data"))]')
     assert len(with_image) >= len(without_image)
 
 def test_all_pets_have_name(login_chrome_driver):
-    # Поиск всех значений поля ИМЯ
+    # Search all values of the NAME field
     names = login_chrome_driver.find_elements('xpath','//div[@id="all_my_pets"]//tr/td[1]')
 
-    # Проверка, что у всех заполнено имя
+    # Check that all names are filled in
     for name in names:
         try:
             assert name.text != ""
         except:
-            raise Exception('Есть питомцы без имени')
+            raise Exception('There are pets without name')
 
 def test_all_names_are_different(login_chrome_driver):
-    # Поиск всех значений поля ИМЯ
+    # Search all values of the NAME field
     names = WebDriverWait(login_chrome_driver, 10).until(
         EC.presence_of_all_elements_located(('xpath', '//div[@id="all_my_pets"]//tr/td[1]')))
-    # Проверка, что у всех питомцев разные имена
+    # Check that all pets have different names
     pet_names_set = set()
     for name in names:
         try:
             assert name.text not in pet_names_set
             pet_names_set.add(name.text)
         except:
-            raise Exception('Есть питомцы с одинаковыми именами')
+            raise Exception('There are pets with same names')
 
 def test_all_pets_have_breed(login_chrome_driver):
-    # Поиск всех значений поля ПОРОДА
+    # Search all values of the BREED field
     breeds = login_chrome_driver.find_elements('xpath', '//div[@id="all_my_pets"]//tr/td[2]')
-    # Проверка, что у всех заполнена порода
+    # Check that all breeds are filled in
     for breed in breeds:
         try:
             assert breed.text != ""
         except:
-            raise Exception('Есть питомцы без породы')
+            raise Exception('There are pets without breed')
 
 def test_all_pets_have_age(login_chrome_driver):
-    # Поиск всех значений поля ВОЗРАСТ
+    # Search all values of the AGE field
     ages = login_chrome_driver.find_elements('xpath', '//div[@id="all_my_pets"]//tr/td[3]')
-    # Проверка, что у всех заполнен возраст
+    # Check that all ages are filled in
     for age in ages:
         try:
             assert age.text != ""
         except:
-            raise Exception('Есть питомцы без возраста')
+            raise Exception('There are pets without age')
 
 def test_no_same_pets(login_chrome_driver):
-
-    # Проверка, что нет повторяющихся питомцев
+    # Check that there are no duplicate pets
     names = login_chrome_driver.find_elements('xpath', '//div[@id="all_my_pets"]//tr/td[1]')
     breeds = login_chrome_driver.find_elements('xpath', '//div[@id="all_my_pets"]//tr/td[2]')
     ages = login_chrome_driver.find_elements('xpath', '//div[@id="all_my_pets"]//tr/td[3]')
 
-    # Список уникальных животных
+    # List of unique animals
     unique_pets = set()
 
     for name, breed, age in zip(names, breeds, ages):
         pet = (name.text, breed.text, age.text)
         if pet in unique_pets:
-            raise Exception('Есть полностью одинаковые питомцы')
+            raise Exception('Duplicate pets exist')
         else:
             unique_pets.add(pet)
