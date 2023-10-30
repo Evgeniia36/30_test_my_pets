@@ -1,14 +1,10 @@
-### Задание 30.5.1
+File `test_my_pets` contains tests for webpage [PetFriends](https://petfriends.skillfactory.ru):
 
-Файл `test_my_pets` содержит тесты для страницы пользователя на сайте [PetFriends](https://petfriends.skillfactory.ru):
-
-- Успешная авторизация
-- Все питомцы посчитаны
-- Хотя бы у половины питомцев есть фото
-- У всех питомцев есть имя
-- У всех питомцев есть порода
-- У всех питомцев есть возраст
-- У всех питомцев разные имена
-- В списке нет повторяющихся питомцев
-
-В коде используются явные и неявные ожидания элементов страницы.
+- Successful authorization
+- All pets are counted
+- At least half of pets have photos
+- All pets have names
+- All pets have breeds
+- All pets have ages
+- All pets have different names
+- No duplicate pets
